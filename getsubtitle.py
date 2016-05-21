@@ -21,18 +21,18 @@ def get_hash(name):
         data += f.read(readsize)
     return hashlib.md5(data).hexdigest()
 
-def rename_to_srt(filename):
+def rename_to_srt(filename, language):
     (prefix, sep, suffix) = filename.rpartition('.')
-    new_filename = prefix + '.pt.srt'
+    new_filename = prefix + '.' + language + '.srt'
     return new_filename
 
-def download_subtitle(filename):
+def download_subtitle(filename, language):
     video_hash = get_hash(filename)
     url = 'http://api.thesubdb.com/'
-    action = '?action=download&language=pt&hash='
+    action = '?action=download&language=' + language + '&hash='
     subtitle = urllib.URLopener()
     subtitle.addheader('user-agent','SubDB/1.0 (getsubtitle.py/0.1; http://github.com/emsilva)')
-    subtitle_name = rename_to_srt(filename)
+    subtitle_name = rename_to_srt(filename, language)
     colored_subtitle_name = bc.UNDERLINE + subtitle_name + bc.ENDC
     try:
         subtitle.retrieve(url + action + video_hash, subtitle_name)
@@ -51,7 +51,7 @@ def main(argv):
         for filename in argv[1:]:
             if os.path.exists(filename):
                 if filename.endswith(tuple(MOVIE_EXTENSIONS)):
-                    download_subtitle(filename)
+                    download_subtitle(filename, 'pt')
                 else:
                     print bc.ERROR + 'File ' + bc.UNDERLINE + filename + bc.ENDC + ' is not a movie file.'
             else:
