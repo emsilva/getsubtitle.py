@@ -23,7 +23,7 @@ def get_hash(name):
 
 def rename_to_srt(filename):
     (prefix, sep, suffix) = filename.rpartition('.')
-    new_filename = prefix + '.srt'
+    new_filename = prefix + '.pt.srt'
     return new_filename
 
 def download_subtitle(filename):
@@ -34,7 +34,10 @@ def download_subtitle(filename):
     subtitle.addheader('user-agent','SubDB/1.0 (getsubtitle.py/0.1; http://github.com/emsilva)')
     subtitle_name = rename_to_srt(filename)
     colored_subtitle_name = bc.UNDERLINE + subtitle_name + bc.ENDC
-    subtitle.retrieve(url + action + video_hash, subtitle_name)
+    try:
+        subtitle.retrieve(url + action + video_hash, subtitle_name)
+    except IOError as e:
+        print bc.ERROR + "TheSubDB does not have the subtitle yet."
     subtitle.close
     if os.path.exists(subtitle_name):
         print bc.SUCCESS + 'File ' + colored_subtitle_name + ' downloaded successfuly.'
