@@ -43,7 +43,7 @@ def download_subtitle(filename, language):
         print bc.SUCCESS + 'File ' + colored_subtitle_name + ' downloaded successfuly.'
 
 def main(argv):
-    MOVIE_EXTENSIONS = ['mp4','mkv']
+    MOVIE_EXTENSIONS = ['mp4','mkv','avi']
     if len(argv) == 1:
         print bc.ERROR + 'Not enough arguments'
         return
